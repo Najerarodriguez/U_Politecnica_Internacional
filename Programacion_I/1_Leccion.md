@@ -105,10 +105,6 @@ Confirma que es un ejecutable para Linux según la arquitectura.
 
 ---
 
-Excelente, vamos **paso a paso y con criterio técnico**, explicando **por qué** existe cada parte del código y luego resolviendo **cada ejercicio en C con comentarios claros y separados**.
-
----
-
 ## 1️⃣ Explicación detallada del código *Hola Mundo*
 
 ```c
@@ -276,21 +272,6 @@ int main(void) {
 
 ---
 
-## 🧠 Observación crítica (nivel universitario)
-
-* Uso de `fgets` evita **desbordamientos de buffer**.
-* `scanf` requiere `&` porque necesita la **dirección de memoria**.
-* Se separa claramente **entrada → procesamiento → salida**, buena práctica para programas escalables.
-
----
-
-Correcto. Tu observación es **válida y técnica**:
-en mi respuesta anterior **mostré el contenido**, pero **no dejé explícito el proceso de creación real de archivos separados**, como debe hacerse en un entorno Linux (Cloud Shell).
-
-Vamos a hacerlo **bien, paso a paso**, **creando físicamente cada archivo**, **uno por operación**, y luego el archivo principal. Sin atajos.
-
----
-
 # 1️⃣ Crear la estructura de archivos (en la terminal)
 
 ```bash
@@ -418,3 +399,91 @@ Ejecutar:
 ```bash
 ./calculadora
 ```
+
+
+---
+
+### 📁 Estructura de archivos 5 archivos en Python**, con **un `main.py`** y **cuatro módulos**, cada uno con **una sola operación**
+
+```
+calculadora/
+│
+├── main.py
+├── suma.py
+├── resta.py
+├── multiplicacion.py
+└── division.py
+```
+
+---
+
+### 📄 `suma.py`
+
+```python
+def sumar(a, b):
+    return a + b
+```
+
+---
+
+### 📄 `resta.py`
+
+```python
+def restar(a, b):
+    return a - b
+```
+
+---
+
+### 📄 `multiplicacion.py`
+
+```python
+def multiplicar(a, b):
+    return a * b
+```
+
+---
+
+### 📄 `division.py`
+
+```python
+def dividir(a, b):
+    if b == 0:
+        return "Error: división entre cero"
+    return a / b
+```
+
+---
+
+### 📄 `main.py`
+
+```python
+from suma import sumar
+from resta import restar
+from multiplicacion import multiplicar
+from division import dividir
+
+def main():
+    a = float(input("Ingrese el primer número: "))
+    b = float(input("Ingrese el segundo número: "))
+
+    print("Suma:", sumar(a, b))
+    print("Resta:", restar(a, b))
+    print("Multiplicación:", multiplicar(a, b))
+    print("División:", dividir(a, b))
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+### ▶️ Ejecución
+
+Desde el directorio `calculadora`:
+
+```bash
+python main.py
+```
+
+---
