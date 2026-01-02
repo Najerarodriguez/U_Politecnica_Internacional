@@ -23,7 +23,7 @@ free -h
 Solo el directorio actual:
 
 ```bash
-ERROR
+pwd
 ```
 
 ---
