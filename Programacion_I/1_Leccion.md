@@ -487,3 +487,7 @@ python main.py
 ```
 
 ---
+```bash
+python -m PyInstaller --onefile main.py
+./dist/main
+```
