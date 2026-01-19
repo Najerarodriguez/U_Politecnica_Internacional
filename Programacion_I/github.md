@@ -106,3 +106,92 @@ git help commit
 ```
 
 Estos comandos cubren el 90% del trabajo real con Git en Linux y Windows.
+
+
+
+
+Pasos **posteriores** a crear el token y conectar GitHub en **Google Cloud Shell**, con comandos:
+
+1. **Configurar Git (si no estaba)**
+
+```bash
+git config --global user.name "TuNombre"
+git config --global user.email "tuemail@dominio.com"
+```
+
+2. **Clonar repositorio**
+
+```bash
+git clone https://github.com/usuario/repositorio.git
+cd repositorio
+```
+
+3. **Autenticación**
+
+* Usuario: tu usuario GitHub
+* Contraseña: **TOKEN** (no tu password)
+* https://github.com/settings/tokens
+
+
+4. **Guardar credenciales (opcional)**
+
+```bash
+git config --global credential.helper store
+```
+
+5. **Ver estado**
+
+```bash
+git status
+```
+
+6. **Crear o modificar archivos**
+
+```bash
+nano archivo.txt
+```
+
+7. **Agregar cambios**
+
+```bash
+git add .
+```
+
+8. **Commit**
+
+```bash
+git commit -m "Primer commit desde Cloud Shell"
+```
+
+9. **Subir cambios**
+
+```bash
+git push origin main
+```
+
+10. **Traer cambios remotos**
+
+```bash
+git pull origin main
+```
+
+11. **Ver ramas**
+
+```bash
+git branch
+git branch -r
+```
+
+12. **Cambiar / crear rama**
+
+```bash
+git checkout -b nueva-rama
+git push -u origin nueva-rama
+```
+
+Flujo mínimo diario:
+`git pull → editar → git add → git commit → git push`
+
+
+
+
