@@ -52,6 +52,13 @@ git remote add origin https://github.com/usuario/repositorio.git
 git remote -v
 ```
 
+### 6.1. Git ignore (GitHub)
+
+```bash
+git add .gitignore
+```
+
+
 ### 7. Subir repositorio local a remoto
 
 ```bash
