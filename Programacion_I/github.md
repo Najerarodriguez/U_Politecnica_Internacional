@@ -7,6 +7,9 @@ git --version
 ```
 
 ### 2. Configuración inicial
+```bash
+git config --global user.name
+```
 
 ```bash
 git config --global user.name "Tu Nombre"
