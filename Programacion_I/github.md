@@ -9,6 +9,9 @@ git --version
 ### 2. Configuración inicial
 ```bash
 git config --global user.name
+git config --get user.name
+git config --list --show-origin | grep user
+git config --list | grep user
 ```
 
 ```bash
