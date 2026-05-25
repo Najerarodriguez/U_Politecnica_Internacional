@@ -1,0 +1,503 @@
+```jsx
+// src/App.jsx
+// Componente principal de la mini-aplicación.
+// Tema: Catálogo de productos con carrito.
+// Demuestra comunicación padre-hijo mediante props y funciones callback.
+
+import { useState } from "react";
+import ProductList from "./components/ProductList";
+import CartClass from "./components/CartClass";
+import ProductForm from "./components/ProductForm";
+import "./App.css";
+
+function App() {
+  // Estado principal del componente padre.
+  // Contiene los productos disponibles en el catálogo.
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Laptop Lenovo",
+      price: 2800000,
+      category: "Tecnología",
+    },
+    {
+      id: 2,
+      name: "Mouse Logitech",
+      price: 95000,
+      category: "Accesorios",
+    },
+    {
+      id: 3,
+      name: "Monitor Samsung",
+      price: 720000,
+      category: "Tecnología",
+    },
+  ]);
+
+  // Estado interno del componente padre para almacenar productos agregados al carrito.
+  const [cart, setCart] = useState([]);
+
+  // Función callback enviada al componente hijo ProductList.
+  // Permite que un hijo comunique al padre qué producto fue seleccionado.
+  const handleAddToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  // Función callback enviada al componente hijo ProductForm.
+  // Permite agregar un nuevo producto desde un formulario funcional con Hooks.
+  const handleAddProduct = (newProduct) => {
+    setProducts([
+      ...products,
+      {
+        id: Date.now(),
+        ...newProduct,
+        price: Number(newProduct.price),
+      },
+    ]);
+  };
+
+  // Función callback enviada al Class Component CartClass.
+  // Permite eliminar productos del carrito.
+  const handleRemoveFromCart = (productId) => {
+    const updatedCart = cart.filter((product) => product.id !== productId);
+    setCart(updatedCart);
+  };
+
+  return (
+    <main className="app-container">
+      {/* Encabezado principal de la aplicación */}
+      <header className="app-header">
+        <h1>Catálogo de Productos</h1>
+        <p>
+          Mini-aplicación React aplicando componentes, props, estado,
+          encapsulamiento y programación orientada a objetos.
+        </p>
+      </header>
+
+      {/* Componente funcional con Hooks para crear productos */}
+      <ProductForm onAddProduct={handleAddProduct} />
+
+      {/* Componente funcional que recibe datos y callback por props */}
+      <ProductList products={products} onAddToCart={handleAddToCart} />
+
+      {/* Componente de clase que recibe props y maneja lógica propia */}
+      <CartClass cart={cart} onRemoveFromCart={handleRemoveFromCart} />
+    </main>
+  );
+}
+
+export default App;
+```
+
+```jsx
+// src/components/ProductList.jsx
+// Componente funcional.
+// Recibe productos desde App mediante props.
+// Envía datos al padre usando una función callback.
+
+import ProductCard from "./ProductCard";
+
+function ProductList({ products, onAddToCart }) {
+  return (
+    <section className="section-card">
+      <h2>Productos disponibles</h2>
+
+      <div className="product-grid">
+        {/* Se recorren los productos recibidos desde el componente padre */}
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={onAddToCart}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default ProductList;
+```
+
+```jsx
+// src/components/ProductCard.jsx
+// Componente funcional hijo.
+// Encapsula la visualización individual de cada producto.
+// Usa props para recibir el producto y la función para agregar al carrito.
+
+function ProductCard({ product, onAddToCart }) {
+  // Función interna encapsulada dentro del componente.
+  // Controla la acción de agregar un producto específico al carrito.
+  const handleClick = () => {
+    onAddToCart(product);
+  };
+
+  return (
+    <article className="product-card">
+      <h3>{product.name}</h3>
+
+      <p>
+        <strong>Categoría:</strong> {product.category}
+      </p>
+
+      <p>
+        <strong>Precio:</strong>{" "}
+        {product.price.toLocaleString("es-CO", {
+          style: "currency",
+          currency: "COP",
+        })}
+      </p>
+
+      <button onClick={handleClick}>Agregar al carrito</button>
+    </article>
+  );
+}
+
+export default ProductCard;
+```
+
+```jsx
+// src/components/ProductForm.jsx
+// Componente funcional con Hooks.
+// Usa useState para manejar el estado interno del formulario.
+// Envía el nuevo producto al componente padre mediante props.
+
+import { useState } from "react";
+
+function ProductForm({ onAddProduct }) {
+  // Estado interno del formulario.
+  // Cada campo representa una propiedad del producto.
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    category: "",
+  });
+
+  // Función encapsulada para actualizar el estado del formulario.
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Función encapsulada para validar y enviar los datos al componente padre.
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Validación básica para evitar productos incompletos.
+    if (!formData.name || !formData.price || !formData.category) {
+      alert("Todos los campos son obligatorios.");
+      return;
+    }
+
+    // Se ejecuta la función callback recibida por props.
+    onAddProduct(formData);
+
+    // Se limpia el formulario después de agregar el producto.
+    setFormData({
+      name: "",
+      price: "",
+      category: "",
+    });
+  };
+
+  return (
+    <section className="section-card">
+      <h2>Registrar nuevo producto</h2>
+
+      <form className="product-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre del producto"
+          value={formData.name}
+          onChange={handleChange}
+        />
+
+        <input
+          type="number"
+          name="price"
+          placeholder="Precio"
+          value={formData.price}
+          onChange={handleChange}
+        />
+
+        <input
+          type="text"
+          name="category"
+          placeholder="Categoría"
+          value={formData.category}
+          onChange={handleChange}
+        />
+
+        <button type="submit">Guardar producto</button>
+      </form>
+    </section>
+  );
+}
+
+export default ProductForm;
+```
+
+```jsx
+// src/components/CartClass.jsx
+// Componente de clase.
+// Demuestra programación orientada a objetos en React.
+// Usa métodos internos para encapsular la lógica del carrito.
+
+import { Component } from "react";
+
+class CartClass extends Component {
+  // Método encapsulado para calcular el valor total del carrito.
+  calculateTotal() {
+    return this.props.cart.reduce((total, product) => {
+      return total + product.price;
+    }, 0);
+  }
+
+  // Método encapsulado para eliminar un producto del carrito.
+  handleRemove(productId) {
+    this.props.onRemoveFromCart(productId);
+  }
+
+  render() {
+    const { cart } = this.props;
+    const total = this.calculateTotal();
+
+    return (
+      <section className="section-card">
+        <h2>Carrito de compras</h2>
+
+        {/* Renderizado condicional según el estado recibido desde App */}
+        {cart.length === 0 ? (
+          <p>No hay productos en el carrito.</p>
+        ) : (
+          <>
+            <ul className="cart-list">
+              {cart.map((product) => (
+                <li key={`${product.id}-${Math.random()}`}>
+                  <span>
+                    {product.name} -{" "}
+                    {product.price.toLocaleString("es-CO", {
+                      style: "currency",
+                      currency: "COP",
+                    })}
+                  </span>
+
+                  <button onClick={() => this.handleRemove(product.id)}>
+                    Eliminar
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <h3>
+              Total:{" "}
+              {total.toLocaleString("es-CO", {
+                style: "currency",
+                currency: "COP",
+              })}
+            </h3>
+          </>
+        )}
+      </section>
+    );
+  }
+}
+
+export default CartClass;
+```
+
+```jsx
+// src/main.jsx
+// Punto de entrada de React.
+// Renderiza el componente principal App dentro del elemento root del HTML.
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
+```css
+/* src/App.css */
+/* Estilos principales de la mini-aplicación React. */
+/* Mantienen una interfaz simple, clara y funcional para el video explicativo. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6f8;
+  color: #1f2937;
+}
+
+.app-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 0;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.app-header h1 {
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.section-card {
+  background-color: #ffffff;
+  padding: 24px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.product-form {
+  display: grid;
+  gap: 14px;
+}
+
+.product-form input {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.product-card {
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background-color: #f9fafb;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+.cart-list {
+  padding: 0;
+  list-style: none;
+}
+
+.cart-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cart-list button {
+  background-color: #dc2626;
+}
+
+.cart-list button:hover {
+  background-color: #b91c1c;
+}
+```
+
+```json
+// package.json
+// Archivo de configuración del proyecto React creado con Vite.
+// El nombre debe cumplir la convención obligatoria:
+// primerapellido_segundoapellido_nombre_actividadevaluacion
+
+{
+  "name": "primerapellido_segundoapellido_nombre_actividadevaluacion",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "firebase": "latest"
+  },
+  "devDependencies": {}
+}
+```
+
+```json
+// firebase.json
+// Configuración de Firebase Hosting.
+// La carpeta dist es generada automáticamente al ejecutar npm run build.
+
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
+
+```markdown
+<!-- prompts/uso-ia.md -->
+<!-- Archivo requerido si se utilizó inteligencia artificial. -->
+<!-- Debe guardarse dentro de la carpeta prompts. -->
+
+# Uso de Inteligencia Artificial
+
+## Referencia bibliográfica
+
+OpenAI. (2026). ChatGPT (versión del 15 de julio) [Modelo de lenguaje de gran tamaño]. https://chat.openai.com/chat
+
+## Cita en texto
+
+(OpenAI, 2026)
+
+## Pregunta realizada a la IA
+
+Genera una mini-aplicación React para demostrar programación orientada a objetos usando componentes de clase, componentes funcionales con Hooks, props, estado interno, callbacks y encapsulamiento.
+
+## Respuesta obtenida
+
+Se generó una aplicación de catálogo de productos con carrito de compras.  
+La aplicación incluye un componente principal App, componentes funcionales ProductList, ProductCard y ProductForm, y un componente de clase CartClass.  
+El proyecto demuestra comunicación padre-hijo mediante props, manejo de estado con useState, funciones callback y encapsulamiento de lógica dentro de cada componente.
+```
