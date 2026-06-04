@@ -9,7 +9,7 @@ Refactorizar el componente `App.js` aplicando principios de **Clean Code**:
 
 ---
 
-## 2. ¿Qué es refactorizar? (para un niño de 7 años)
+## 2. ¿Qué es refactorizar? 
 
 Imagina que tienes una caja de juguetes donde metiste **todo revuelto**: calcetines, lápices, carros y galletas. Todo cabe, pero nadie sabe dónde está nada.
 
@@ -20,8 +20,6 @@ En código hacemos lo mismo: **no cambiamos lo que hace el programa**, solo lo h
 ---
 
 ## 3. Problema 1 — Nombres que no dicen nada
-
-### ¿Cómo explicárselo a un niño de 7 años?
 
 Si le pones a tu perro el nombre **"X"** nadie sabe que es un perro. Si le pones **"Firulais"** todos saben de quién hablas. Los nombres en el código funcionan igual.
 
@@ -103,8 +101,6 @@ Ahora cualquier persona que lea el código sabe exactamente qué hace cada varia
 ---
 
 ## 4. Problema 2 — Funciones que hacen demasiadas cosas
-
-### ¿Cómo explicárselo a un niño de 7 años?
 
 Imagina que le pides a tu mamá que haga **una sola cosa**: "mamá, por favor tráeme agua". Eso es fácil.
 
@@ -201,8 +197,6 @@ Cada función ahora hace **exactamente una cosa** y tiene un nombre que lo dice.
 ---
 
 ## 5. Problema 3 — Comentarios que no ayudan
-
-### ¿Cómo explicárselo a un niño de 7 años?
 
 Si en tu libro de matemáticas dice **"2 + 2 = 4"** y alguien escribe al lado **"esto suma dos con dos"**, ese comentario no ayuda. Ya se ve.
 
