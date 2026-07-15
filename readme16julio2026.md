@@ -148,19 +148,7 @@ Cada capa conoce únicamente la capa que necesita utilizar.
 
 ---
 
-## Paso 1: instalar Firebase
-
-Desde la raíz del proyecto:
-
-```bash
-npm install firebase
-```
-
-La API modular de Firebase utiliza importaciones como `initializeApp`, `getDatabase`, `ref`, `push` y `onValue`. Este formato permite importar únicamente los módulos utilizados por la aplicación. ([Firebase][1])
-
----
-
-## Paso 2: separar la configuración de Firebase
+## Paso 1: separar la configuración de Firebase
 
 ## `src/firebase.js`
 
@@ -190,7 +178,7 @@ Google Analytics no se inicializa porque no participa en el caso de uso de tarea
 
 ---
 
-## Paso 3: crear el servicio de acceso a datos
+## Paso 2: crear el servicio de acceso a datos
 
 ## `src/services/taskService.js`
 
@@ -228,7 +216,7 @@ El servicio no contiene JSX, no utiliza estado de React y no conoce cómo se mue
 
 ---
 
-## Paso 4: mover la lógica de negocio a un hook personalizado
+## Paso 3: mover la lógica de negocio a un hook personalizado
 
 ## `src/hooks/useTasks.js`
 
@@ -277,7 +265,7 @@ La devolución de `subscribeTasks` desde `useEffect` hace que React ejecute auto
 
 ---
 
-## Paso 5: crear un componente de presentación
+## Paso 4: crear un componente de presentación
 
 ## `src/components/TaskForm.js`
 
@@ -322,7 +310,7 @@ El estado `text` pertenece al componente porque es **estado visual del formulari
 
 ---
 
-## Paso 6: aplicar OCP con un componente extensible
+## Paso 5: aplicar OCP con un componente extensible
 
 ## `src/components/DataList.js`
 
@@ -384,7 +372,7 @@ En el segundo caso se agrega un nuevo uso sin cambiar el código original de `Da
 
 ---
 
-## Paso 7: integrar las responsabilidades
+## Paso 6: integrar las responsabilidades
 
 ## `src/pages/TasksPage.js`
 
@@ -422,7 +410,7 @@ No accede directamente a Firebase ni implementa validaciones.
 
 ---
 
-## Paso 8: utilizar la página en la aplicación
+## Paso 7: utilizar la página en la aplicación
 
 ## `src/App.js`
 
@@ -677,18 +665,3 @@ Nunca deben colocarse en el frontend:
 * Tokens con privilegios administrativos.
 
 ---
-
-# Resultado
-
-La versión refactorizada cumple con los objetivos principales:
-
-* **SRP:** presentación, lógica de negocio, configuración y acceso a datos tienen responsabilidades separadas.
-* **OCP:** `DataList` puede extenderse mediante composición y propiedades sin modificar su implementación.
-* **Modularidad:** cada cambio se realiza en la capa correspondiente.
-* **Extensibilidad:** nuevos componentes o fuentes de datos pueden incorporarse con menor impacto.
-* **Mantenibilidad:** el código es más fácil de comprender, probar y modificar.
-
-[1]: https://firebase.google.com/docs/web/setup "Add Firebase to your JavaScript project  |  Firebase for web platforms"
-[2]: https://firebase.google.com/docs/reference/js/database "database package  |  Firebase JavaScript API reference"
-[3]: https://firebase.google.com/docs/database/web/read-and-write "Read and Write Data on the Web  |  Firebase Realtime Database"
-[4]: https://firebase.google.com/docs/projects/api-keys "Learn about using and managing API keys for Firebase  |  Firebase Documentation"
