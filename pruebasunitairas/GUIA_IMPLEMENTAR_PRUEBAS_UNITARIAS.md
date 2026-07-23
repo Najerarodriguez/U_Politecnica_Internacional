@@ -62,6 +62,21 @@ src/tests/componentes-basicos.test.jsx
 ```
 
 ## Paso 2: Escribir el contenido inicial
+```jsx
+# npx vitest run src/tests/componentes-basicos.test.jsx
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { ErrorBanner } from '../components/ErrorBanner';
+
+describe('ErrorBanner', () => {
+  it('muestra un mensaje de error visible', () => {
+    render(<ErrorBanner message="Algo salio mal" />);
+
+    expect(screen.getByRole('alert')).toBeInTheDocument();
+    expect(screen.getByText('Algo salio mal')).toBeInTheDocument();
+  });
+});
+```
 
 Pegar este código dentro del archivo:
 
